@@ -17,14 +17,20 @@ export async function setupVite(app, server) {
     // Configure Vite
     const { createServer: createViteServer } = await import('vite');
     const viteServer = await createViteServer({
-      root: path.resolve(process.cwd()),
+      root: path.resolve(process.cwd(), 'client'),
       server: {
         middlewareMode: true,
         hmr: {
           server
         }
       },
-      appType: 'spa'
+      appType: 'spa',
+      resolve: {
+        alias: {
+          '@': path.resolve(process.cwd(), 'client/src'),
+          '@shared': path.resolve(process.cwd(), 'shared')
+        }
+      }
     });
 
     // Use Vite middleware
@@ -40,10 +46,17 @@ export async function setupVite(app, server) {
       }
 
       try {
-        const htmlPath = path.resolve(process.cwd(), 'client/index.html');
-        let template = fs.readFileSync(htmlPath, 'utf-8');
-        template = await viteServer.transformIndexHtml(url, template);
+        // Serve index.html directly from client directory
+        let template;
+        try {
+          const htmlPath = path.resolve(process.cwd(), 'client/index.html');
+          template = fs.readFileSync(htmlPath, 'utf-8');
+        } catch (err) {
+          console.error('Error reading index.html:', err);
+          return next(err);
+        }
         
+        template = await viteServer.transformIndexHtml(url, template);
         res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
       } catch (e) {
         viteServer.ssrFixStacktrace(e);
