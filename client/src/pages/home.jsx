@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useLocation } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
-import { Navbar } from '@/components/layout/navbar.jsx';
-import { Footer } from '@/components/layout/footer.jsx';
-import { FileUpload } from '@/components/ui/file-upload.jsx';
-import { FileCard } from '@/components/ui/file-card.jsx';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { queryClient } from '@/lib/queryClient';
+import { Navbar } from '../components/layout/navbar.jsx';
+import { Footer } from '../components/layout/footer.jsx';
+import { FileUpload } from '../components/ui/file-upload.jsx';
+import { FileCard } from '../components/ui/file-card.jsx';
+import { Input } from '../components/ui/input';
+import { Button } from '../components/ui/button';
+import { Card, CardContent } from '../components/ui/card';
+import { queryClient } from '../lib/queryClient';
 
 export default function Home() {
   const [, setLocation] = useLocation();
